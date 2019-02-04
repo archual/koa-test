@@ -7,7 +7,7 @@
             "request": "attach",
             "protocol": "inspector",
             "port": 9229,
-            "localRoot": "${workspaceRoot}",
+            "localRoot": "${workspaceRoot}/app",
             "remoteRoot": "/opt/app"
         },
         {
@@ -16,7 +16,7 @@
             "request": "attach",
             "protocol": "inspector",
             "port": 9230,
-            "localRoot": "${workspaceRoot}",
+            "localRoot": "${workspaceRoot}/app",
             "remoteRoot": "/opt/app",
             "preLaunchTask": "Docker npm run test-wait-debuger", // See ./tasks.json
             "internalConsoleOptions": "openOnSessionStart"

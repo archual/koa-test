@@ -15,13 +15,7 @@ const morgan = require('morgan');
 const MongoClient = require('mongodb').MongoClient;
 // this example includes a connection to MongoDB
 
-const {
-  MONGO_USERNAME,
-  MONGO_PASSWORD,
-  MONGO_HOSTNAME,
-  MONGO_PORT,
-  MONGO_DATABASE_NAME
-} = process.env;
+const { MONGO_USERNAME, MONGO_PASSWORD, MONGO_HOSTNAME, MONGO_PORT, MONGO_DATABASE_NAME } = process.env;
 
 // Connection URL
 const url = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:${MONGO_PORT}`;
@@ -36,7 +30,7 @@ setTimeout(() => {
     if (err) {
       return console.error(err);
     }
-    console.log("Connected successfully to database");
+    console.log('Connected successfully to database');
     db = client.db(MONGO_DATABASE_NAME);
   });
 }, 2000);
@@ -46,18 +40,18 @@ const app = express();
 
 app.use(morgan('common'));
 
-app.get('/', function (req, res) {
+app.get('/', function(req, res) {
   res.send('Hello Docker World\n');
 });
 
-app.get('/healthz', function (req, res) {
-	// do app logic here to determine if app is truly healthy
-	// you should return 200 if healthy, and anything else will fail
-	// if you want, you should be able to restrict this to localhost (include ipv4 and ipv6)
+app.get('/healthz', function(req, res) {
+  // do app logic here to determine if app is truly healthy
+  // you should return 200 if healthy, and anything else will fail
+  // if you want, you should be able to restrict this to localhost (include ipv4 and ipv6)
   res.send('I am happy and healthy\n');
 });
 
-app.get('/documents', function (req, res, next) {
+app.get('/documents', function(req, res, next) {
   // might have not been connected just yet
   if (db) {
     db.collection('documents').find({}).toArray(function(err, docs) {
@@ -71,29 +65,29 @@ app.get('/documents', function (req, res, next) {
   } else {
     next(new Error('Waiting for connection to database'));
   }
-})
+});
 
 const PORT = process.env.PORT || 8080;
-var server = app.listen(PORT, function () {
+var server = app.listen(PORT, function() {
   console.log(`Webserver is ready and listening on port ${PORT}`);
 });
 
 
 // quit on ctrl-c when running docker in terminal
-process.on('SIGINT', function onSigint () {
-	console.info('Got SIGINT (aka ctrl-c in docker). Graceful shutdown ', new Date().toISOString());
+process.on('SIGINT', function onSigint() {
+  console.info('Got SIGINT (aka ctrl-c in docker). Graceful shutdown ', new Date().toISOString());
   shutdown();
 });
 
 // quit properly on docker stop
-process.on('SIGTERM', function onSigterm () {
+process.on('SIGTERM', function onSigterm() {
   console.info('Got SIGTERM (docker container stop). Graceful shutdown ', new Date().toISOString());
   shutdown();
-})
+});
 
-
-let sockets = {}, nextSocketId = 0;
-server.on('connection', function (socket) {
+let sockets = {},
+  nextSocketId = 0;
+server.on('connection', function(socket) {
   const socketId = nextSocketId++;
   sockets[socketId] = socket;
 
@@ -106,7 +100,7 @@ server.on('connection', function (socket) {
 function shutdown() {
   waitForSocketsToClose(10);
 
-  server.close(function onServerClosed (err) {
+  server.close(function onServerClosed(err) {
     if (err) {
       console.error(err);
       process.exitCode = 1;
@@ -120,8 +114,8 @@ function waitForSocketsToClose(counter) {
     console.log(`Waiting ${counter} more ${counter === 1 ? 'seconds' : 'second'} for all connections to close...`);
     return setTimeout(waitForSocketsToClose, 1000, counter - 1);
   }
-  
-  console.log("Forcing all connections to close now");
+
+  console.log('Forcing all connections to close now');
   for (var socketId in sockets) {
     sockets[socketId].destroy();
   }
