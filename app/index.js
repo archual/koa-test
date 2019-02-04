@@ -44,7 +44,7 @@ app.get('/', function(req, res) {
   res.send('Hello Docker World\n');
 });
 
-app.get('/healthz', function(req, res) {
+app.get('/health', function(req, res) {
   // do app logic here to determine if app is truly healthy
   // you should return 200 if healthy, and anything else will fail
   // if you want, you should be able to restrict this to localhost (include ipv4 and ipv6)
