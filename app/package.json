@@ -11,7 +11,8 @@
     "dev-host": "nodemon --debug=5858",
     "start-watch": "nodemon index.js --inspect=0.0.0.0:9229",
     "start-wait-debuger": "nodemon index.js --inspect-brk=0.0.0.0:9229",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "test-verbose": "jest --watchAll --verbose"
   },
   "dependencies": {
     "express": "^4.16.3",
