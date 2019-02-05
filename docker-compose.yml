@@ -54,12 +54,17 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=example
       - MONGO_INITDB_DATABASE=example-database
+    # command: mongod --bind_ip_all
     healthcheck:
-      test: "[ `echo 'db.runCommand(\"ping\").ok' | mongo localhost/example-database --quiet` ] && echo 0 || echo 1"
+      test: "[ `echo 'db.runCommand(\"ping\").ok' | mongo localhost/example-database --quiet --bind_ip 0.0.0.0` ] && echo 0 || echo 1"
       interval: 5s
       start_period: 10s
       timeout: 4s
       retries: 3
+
+    volumes:
+      - data-volume:/data/db
       
 volumes:
   notused:
+  data-volume:
