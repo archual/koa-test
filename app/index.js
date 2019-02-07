@@ -3,6 +3,8 @@ const serverClose = require('./utilities/processEvents');
 const Koa = require('koa');
 const KoaRouter = require('koa-router');
 const json = require('koa-json');
+const path = require('path');
+const render = require('koa-ejs');
 
 // Api
 const app = new Koa();
@@ -10,8 +12,19 @@ const router = new KoaRouter();
 
 // Middleware.
 app.use(json());
+render(app, {
+  root: path.join(__dirname, 'views'),
+  layout: 'layout',
+  viewExt: 'html',
+  cache: false,
+  debug: false
+});
 
-router.get('/', ctx => ctx.body = 'Hello Docker World');
+
+router.get('/', async ctx => {
+  await ctx.render('index');// = 'Hello Docker World'
+});
+
 router.get('/health', ctx => {
   // do app logic here to determine if app is truly healthy
   // you should return 200 if healthy, and anything else will fail
@@ -22,9 +35,9 @@ router.get('/documents', async (ctx, next) => {
   if (db) {
     ctx.body = await getDocumentsPromise('documents');
     // Insert new doc.
-    db.collection('documents').insertOne({
-      name: 'test'
-    });
+    // db.collection('documents').insertOne({
+    //   name: 'test'
+    // });
   }
   else {
     ctx.response.status = 500;

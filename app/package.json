@@ -17,6 +17,7 @@
   "dependencies": {
     "express": "^4.16.3",
     "koa": "^2.7.0",
+    "koa-ejs": "^4.2.0",
     "koa-json": "^2.0.2",
     "koa-router": "^7.4.0",
     "mongodb": "^3.1.8",
